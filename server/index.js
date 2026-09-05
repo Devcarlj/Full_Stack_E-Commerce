@@ -55,8 +55,6 @@ app.use(helmet({
     crossOriginResourcePolicy: false
 }))
 
-// Add back the /api prefix because Vercel rewrites don't strip the path,
-// and we need it to match both locally (via Vite proxy) and in production.
 mainRouter.use('/user', userRouter);
 mainRouter.use('/category', categoryRouter);
 mainRouter.use('/file', uploadRouter);
@@ -76,8 +74,6 @@ app.get("/api/api-status", (req, res) => {
 });
 
 // Database & Export
-// We await connectDB before starting the local server to avoid 500 errors on first load.
-// This is also handled by the middleware above for every request.
 connectDB().then(() => {
     if (process.env.NODE_ENV !== 'production') {
         app.listen(PORT, () => {
